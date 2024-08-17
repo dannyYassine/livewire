@@ -23,7 +23,14 @@ composer require laravel/octane
 ```
 
 ```bash
-php artisan octane:install --server=frankenphp
+curl -Lo frankenphp https://github.com/frankenphp/frankenphp/releases/latest/download/frankenphp-linux
+chmod +x frankenphp
+sudo mv frankenphp /usr/local/bin/
+frankenphp --version
+```
+
+```bash
+php artisan octane:install --server=frankenphp -n
 ```
 
 ```bash
