@@ -17,6 +17,7 @@ yarn
 
 ```bash
 composer require livewire/livewire
+```
 
 ```bash
 composer require laravel/octane
