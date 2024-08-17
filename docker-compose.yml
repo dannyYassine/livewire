@@ -1,0 +1,83 @@
+networks:
+  dev:
+    driver: bridge
+
+services:
+  postgres:
+    container_name: livewire-postgres
+    image: postgres:14.1-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - '5432:5432'
+    restart: unless-stopped
+    tty: true
+    networks:
+      - dev
+
+  redis:
+    container_name: livewire-redis
+    image: redis:7.0
+    restart: always
+    ports:
+      - '6379:6379'
+    networks:
+      - dev
+
+  api:
+    image: livewire-api:latest
+    container_name: livewire-api
+    build:
+      context: .
+      dockerfile: ./docker/php/php.dockerfile
+    command: >
+      sh -c "tail -f /dev/null"
+    #             if [ ! -d "vendor" ]; then composer install ; fi &&
+    #             if [ ! -d "node_modules" ]; then yarn install ; fi &&
+    #             php artisan key:generate &&
+    #             php artisan octane:start --server=dev --watch --workers=1 --max-requests=250 --host=0.0.0.0 --port=8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api:/usr/src/api
+      - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    networks:
+      - dev
+    depends_on:
+      - postgres
+    links:
+      - postgres
+
+  worker:
+    image: livewire-api:latest
+    container_name: livewire-worker
+    command: >
+      sh -c "if [ -d \"vendor\" ]; then \
+            php artisan queue:listen \
+            else \
+            tail -f /dev/null \
+            fi"
+    volumes:
+      - ./api:/usr/src/api
+    networks:
+      - dev
+    depends_on:
+      - api
+      - postgres
+    links:
+      - postgres
+
+  playwright:
+    container_name: livewire-playwright
+    build:
+      context: .
+      dockerfile: ./docker/playwright/playwright.dockerfile
+    command: tail -f /dev/null
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./client:/usr/src/client
+    networks:
+      - dev
