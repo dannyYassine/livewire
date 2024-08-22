@@ -15,3 +15,9 @@ reset.env:
 	rm -rf ./api/vendor
 	rm -rf ./api/node_modules
 	make install.env
+
+up:
+	docker compose up -d
+
+down:
+	docker compose stop

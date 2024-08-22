@@ -1,39 +1,25 @@
 # livewire
 
-## Inside the `api` container
-
-### first command
+## install project
 
 ```bash
-composer create-project laravel/laravel example-app
+make install.env
 ```
 
-### installing project
+## running the project
 
 ```bash
-composer install --ignore-platform-reqs
-yarn
+make up
 ```
 
-```bash
-composer require livewire/livewire
-```
+## stoping the project
 
 ```bash
-composer require laravel/octane
+make down
 ```
 
-```bash
-curl -Lo frankenphp https://github.com/frankenphp/frankenphp/releases/latest/download/frankenphp-linux
-chmod +x frankenphp
-sudo mv frankenphp /usr/local/bin/
-frankenphp --version
-```
+## reset the project
 
 ```bash
-php artisan octane:install --server=frankenphp -n
-```
-
-```bash
-docker exec -it livewire-api php artisan octane:frankenphp --workers=4 --max-requests=10 --host=0.0.0.0 --port=8000 --watch
+make reset.env
 ```
