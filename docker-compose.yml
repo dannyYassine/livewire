@@ -33,12 +33,11 @@ services:
       context: .
       dockerfile: ./docker/php/php.dockerfile
     command: >
-      sh -c "tail -f /dev/null"
-    #             if [ ! -d "vendor" ]; then composer install ; fi &&
-    #             if [ ! -d "node_modules" ]; then yarn install ; fi &&
-    #             php artisan key:generate &&
-    #             php artisan octane:start --server=dev --watch --workers=1 --max-requests=250 --host=0.0.0.0 --port=8000"
-    #             php artisan octane:frankenphp --workers=1 --max-requests=1
+      sh -c "if [ -d \"vendor\" ]; then \
+            php artisan octane:frankenphp --workers=4 --max-requests=10 --host=0.0.0.0 --port=8000 --watch \
+            else \
+            tail -f /dev/null \
+            fi"
     ports:
       - "8000:8000"
     volumes:
