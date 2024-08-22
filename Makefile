@@ -1,5 +1,6 @@
 install.env:
-	if [ ! -f /api/.env ]; then cp ./api/.env.example ./api/.env; fi
+	if [ ! -f ./api/.env ]; then cp ./api/.env.example ./api/.env; fi
+	if [ ! -f ./api/database/database.sqlite ]; then touch ./api/database/database.sqlite; fi
 	docker compose up -d
 	while [ "$(docker exec -t api echo "Is running")" != "" ]; do sleep 2; done
 	docker exec -it livewire-api composer install --ignore-platform-reqs
