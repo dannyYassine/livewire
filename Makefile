@@ -1,4 +1,4 @@
-install.env:
+env.install:
 	if [ ! -f ./api/.env ]; then cp ./api/.env.example ./api/.env; fi
 	if [ ! -f ./api/database/database.sqlite ]; then touch ./api/database/database.sqlite; fi
 	docker compose up -d
@@ -11,7 +11,7 @@ install.env:
 	docker exec -it livewire-api php artisan db:seed --force
 	docker compose stop
 
-reset.env:
+env.reset:
 	docker compose down
 	rm -rf ./api/vendor
 	rm -rf ./api/node_modules
