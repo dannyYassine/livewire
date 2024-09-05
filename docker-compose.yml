@@ -34,15 +34,18 @@ services:
       dockerfile: ./docker/php/php.dockerfile
     command: >
       sh -c "if [ -d \"vendor\" ]; then \
-            php artisan octane:frankenphp --workers=4 --max-requests=10 --host=0.0.0.0 --port=8000 --watch \
+            echo \"ready to run application\"
+            tail -f /dev/null \
             else \
             tail -f /dev/null \
             fi"
     ports:
       - "8000:8000"
+      - "5173:5173" # laravel vite server
     volumes:
       - ./api:/usr/src/api
       - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ./docker/php/api.conf:/etc/supervisor/conf.d/api.conf
     networks:
       - dev
     depends_on:
