@@ -23,3 +23,13 @@ make down
 ```bash
 make reset.env
 ```
+
+On GCP to allow on GCP username
+
+```
+sudo passwd $username
+```
+
+```
+echo "$username ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$username
+```
