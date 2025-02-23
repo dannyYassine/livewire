@@ -19,7 +19,6 @@ RUN apt-get install -y libpq-dev git zip unzip supervisor
 # install php extensions and libs
 RUN docker-php-ext-install pcntl
 RUN docker-php-ext-install pdo pgsql pdo_pgsql
-RUN pecl install xdebug
 
 # enable php extensions
 RUN docker-php-ext-enable xdebug
@@ -37,3 +36,5 @@ RUN composer install --ignore-platform-reqs
 RUN php artisan octane:install --server=frankenphp -n
 # RUN php artisan migrate:fresh --force
 # RUN php artisan db:seed --force
+
+CMD php artisan octane:frankenphp --workers=4 --max-requests=10 --host=0.0.0.0 --port=$PORT
