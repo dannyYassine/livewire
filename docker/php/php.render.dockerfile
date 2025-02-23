@@ -25,13 +25,15 @@ RUN npm install -g yarn
 
 COPY ./api .
 
+RUN touch database/database.sqlite
+
 RUN yarn
 
 RUN composer install --ignore-platform-reqs
 
 # RUN php artisan key:generate
 RUN php artisan octane:install --server=frankenphp -n
-# RUN php artisan migrate:fresh --force
-# RUN php artisan db:seed --force
+RUN php artisan migrate:fresh --force
+RUN php artisan db:seed --force
 
 CMD php artisan octane:frankenphp --workers=4 --max-requests=10 --host=0.0.0.0 --port=$PORT
