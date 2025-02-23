@@ -20,9 +20,6 @@ RUN apt-get install -y libpq-dev git zip unzip supervisor
 RUN docker-php-ext-install pcntl
 RUN docker-php-ext-install pdo pgsql pdo_pgsql
 
-# enable php extensions
-RUN docker-php-ext-enable xdebug
-
 # install yarn
 RUN npm install -g yarn
 
